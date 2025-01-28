@@ -1,3 +1,9 @@
+# MIT License
+# Copyright (c) 2025 Faruk
+# Bu yazılımın kullanımına, değiştirilmesine ve dağıtılmasına izin verilir. Detaylar için LICENSE dosyasına bakınız.
+
+
+
 import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
