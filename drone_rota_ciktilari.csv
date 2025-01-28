@@ -1,0 +1,25 @@
+Cluster,Route
+0,Kuzey Depo -> Nokta 1 (ihtiyac 12.0 birim) -> Nokta 5 (ihtiyac 15.0 birim) -> Kuzey Depo
+0,Kuzey Depo -> Nokta 8 (ihtiyac 11.0 birim) -> Nokta 9 (ihtiyac 10.0 birim) -> Nokta 11 (ihtiyac 8.0 birim) -> Kuzey Depo
+0,Kuzey Depo -> Nokta 12 (ihtiyac 10.0 birim) -> Nokta 14 (ihtiyac 9.0 birim) -> Nokta 17 (ihtiyac 8.0 birim) -> Kuzey Depo
+0,Kuzey Depo -> Nokta 21 (ihtiyac 15.0 birim) -> Kuzey Depo
+0,Kuzey Depo -> Nokta 25 (ihtiyac 18.0 birim) -> Nokta 26 (ihtiyac 9.0 birim) -> Kuzey Depo
+0,Kuzey Depo -> Nokta 35 (ihtiyac 16.0 birim) -> Nokta 36 (ihtiyac 12.0 birim) -> Kuzey Depo
+0,Kuzey Depo -> Nokta 40 (ihtiyac 12.0 birim) -> Nokta 43 (ihtiyac 11.0 birim) -> Kuzey Depo
+1,Güyey Depo -> Nokta 3 (ihtiyac 12.0 birim) -> Nokta 6 (ihtiyac 13.0 birim) -> Nokta 7 (ihtiyac 4.0 birim) -> Güyey Depo
+1,Güyey Depo -> Nokta 16 (ihtiyac 9.0 birim) -> Nokta 22 (ihtiyac 5.0 birim) -> Güyey Depo
+1,Güyey Depo -> Nokta 23 (ihtiyac 18.0 birim) -> Güyey Depo
+1,Güyey Depo -> Nokta 27 (ihtiyac 15.0 birim) -> Nokta 29 (ihtiyac 12.0 birim) -> Güyey Depo
+1,Güyey Depo -> Nokta 30 (ihtiyac 12.0 birim) -> Güyey Depo
+1,Güyey Depo -> Nokta 31 (ihtiyac 19.0 birim) -> Güyey Depo
+1,Güyey Depo -> Nokta 38 (ihtiyac 15.0 birim) -> Güyey Depo
+2,Güyey Depo -> Nokta 2 (ihtiyac 6.0 birim) -> Nokta 10 (ihtiyac 13.0 birim) -> Güyey Depo
+2,Güyey Depo -> Nokta 15 (ihtiyac 16.0 birim) -> Nokta 28 (ihtiyac 5.0 birim) -> Güyey Depo
+2,Güyey Depo -> Nokta 44 (ihtiyac 17.0 birim) -> Güyey Depo
+3,Kuzey Depo -> Nokta 13 (ihtiyac 14.0 birim) -> Nokta 19 (ihtiyac 16.0 birim) -> Kuzey Depo
+3,Kuzey Depo -> Nokta 20 (ihtiyac 4.0 birim) -> Nokta 32 (ihtiyac 12.0 birim) -> Nokta 42 (ihtiyac 5.0 birim) -> Kuzey Depo
+3,Kuzey Depo -> Nokta 45 (ihtiyac 13.0 birim) -> Kuzey Depo
+4,Güyey Depo -> Nokta 4 (ihtiyac 12.0 birim) -> Nokta 18 (ihtiyac 10.0 birim) -> Güyey Depo
+4,Güyey Depo -> Nokta 24 (ihtiyac 13.0 birim) -> Nokta 33 (ihtiyac 14.0 birim) -> Güyey Depo
+4,Güyey Depo -> Nokta 34 (ihtiyac 4.0 birim) -> Nokta 37 (ihtiyac 18.0 birim) -> Nokta 39 (ihtiyac 3.0 birim) -> Güyey Depo
+4,Güyey Depo -> Nokta 41 (ihtiyac 17.0 birim) -> Güyey Depo
