@@ -1,0 +1,22 @@
+﻿Kume,Drone,Depo,Yuk,Mesafe,Rota
+0,1,Kuzey Depo,28,131.31,Kuzey Depo -> Nokta 1 (12 birim) -> Nokta 11 (8 birim) -> Nokta 17 (8 birim) -> Kuzey Depo
+0,2,Kuzey Depo,27,117.09,Kuzey Depo -> Nokta 35 (16 birim) -> Nokta 8 (11 birim) -> Kuzey Depo
+0,3,Kuzey Depo,30,122.71,Kuzey Depo -> Nokta 25 (18 birim) -> Nokta 40 (12 birim) -> Kuzey Depo
+0,4,Kuzey Depo,25,177.8,Kuzey Depo -> Nokta 9 (10 birim) -> Nokta 5 (15 birim) -> Kuzey Depo
+0,5,Kuzey Depo,28,233.61,Kuzey Depo -> Nokta 14 (9 birim) -> Nokta 26 (9 birim) -> Nokta 12 (10 birim) -> Kuzey Depo
+0,6,Kuzey Depo,27,219.3,Kuzey Depo -> Nokta 21 (15 birim) -> Nokta 36 (12 birim) -> Kuzey Depo
+0,7,Kuzey Depo,11,274.26,Kuzey Depo -> Nokta 43 (11 birim) -> Kuzey Depo
+1,8,Güney Depo,30,257.5,Güney Depo -> Nokta 16 (9 birim) -> Nokta 29 (12 birim) -> Nokta 7 (4 birim) -> Nokta 22 (5 birim) -> Güney Depo
+1,9,Güney Depo,30,161.45,Güney Depo -> Nokta 23 (18 birim) -> Nokta 3 (12 birim) -> Güney Depo
+1,10,Güney Depo,28,182.31,Güney Depo -> Nokta 27 (15 birim) -> Nokta 6 (13 birim) -> Güney Depo
+1,11,Güney Depo,27,180.62,Güney Depo -> Nokta 38 (15 birim) -> Nokta 30 (12 birim) -> Güney Depo
+1,12,Güney Depo,19,220.74,Güney Depo -> Nokta 31 (19 birim) -> Güney Depo
+2,13,Güney Depo,27,185.06,Güney Depo -> Nokta 2 (6 birim) -> Nokta 15 (16 birim) -> Nokta 28 (5 birim) -> Güney Depo
+2,14,Güney Depo,30,116.76,Güney Depo -> Nokta 10 (13 birim) -> Nokta 44 (17 birim) -> Güney Depo
+3,15,Kuzey Depo,25,179.66,Kuzey Depo -> Nokta 42 (5 birim) -> Nokta 20 (4 birim) -> Nokta 19 (16 birim) -> Kuzey Depo
+3,16,Kuzey Depo,26,190.64,Kuzey Depo -> Nokta 32 (12 birim) -> Nokta 13 (14 birim) -> Kuzey Depo
+3,17,Kuzey Depo,13,199.22,Kuzey Depo -> Nokta 45 (13 birim) -> Kuzey Depo
+4,18,Güney Depo,25,166.69,Güney Depo -> Nokta 39 (3 birim) -> Nokta 34 (4 birim) -> Nokta 37 (18 birim) -> Güney Depo
+4,19,Güney Depo,30,127.19,Güney Depo -> Nokta 24 (13 birim) -> Nokta 41 (17 birim) -> Güney Depo
+4,20,Güney Depo,24,176.92,Güney Depo -> Nokta 33 (14 birim) -> Nokta 18 (10 birim) -> Güney Depo
+4,21,Güney Depo,12,180.48,Güney Depo -> Nokta 4 (12 birim) -> Güney Depo
