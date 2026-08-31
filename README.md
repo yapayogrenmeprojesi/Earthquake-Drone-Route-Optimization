@@ -43,7 +43,10 @@ doğrudan dosyaya kaydediliyor.
 - `yardim_talepleri.xlsx` — her noktanın tıbbi malzeme ve yiyecek talebi. Toplam
   talep 522 birim; en küçük nokta 3, en büyüğü 19 birim istiyor.
 
-522 birim ve 30 birimlik kapasiteyle en iyi ihtimalle 18 drone turu gerekiyor.
+522 birim ve 30 birimlik kapasiteyle en iyi ihtimalle 18 drone turu gerekiyor;
+bu çalışmada 22 tur çıkıyor. `--kapasite` en büyük nokta talebinin, yani 19
+birimin altına indirilirse o nokta hiçbir drona sığmadığı için betik hata verip
+duruyor.
 
 ## Kümeleme
 
@@ -76,25 +79,44 @@ Güney Depo'ya düştü.
 ## Rota kurma
 
 Bir kümedeki toplam talep tek bir drona sığmadığı için küme, kapasiteye göre
-turlara bölünüyor. Her tur depodan başlıyor, kalan noktalar arasından kapasiteye
-sığan en yakını seçiliyor, sığan nokta kalmayınca depoya dönülüyor. Tur
-tamamlandıktan sonra ziyaret sırası 2-opt ile iyileştiriliyor: turdaki iki kenar
-seçilip aradaki parça ters çevriliyor, bu değişiklik turu kısaltıyorsa kabul
-ediliyor ve kısaltan bir hamle kalmayana kadar sürüyor.
+turlara bölünüyor. Bölme işi Clarke-Wright tasarruf yöntemiyle yapılıyor:
+başlangıçta her nokta tek başına bir tur, yani depodan çıkıp o noktaya gidip
+dönen bir drone. İki turu birleştirmenin kazandırdığı yol
+
+```
+tasarruf(i, j) = mesafe(depo, i) + mesafe(depo, j) - mesafe(i, j)
+```
+
+ile hesaplanıyor, bütün nokta çiftleri bu değere göre büyükten küçüğe
+sıralanıyor ve en çok kazandıran birleştirmeden başlanıyor. Bir birleştirme,
+iki turun toplam yükü kapasiteyi aşmıyorsa ve iki nokta turların uçlarındaysa
+kabul ediliyor. Tasarruf sıfırın altına düşünce duruluyor; orada depoya uğrayıp
+dönmek iki noktayı doğrudan bağlamaktan kısa demek.
+
+Turlar kurulduktan sonra her turun ziyaret sırası ayrıca 2-opt ile
+iyileştiriliyor: turdaki iki kenar seçilip aradaki parça ters çevriliyor, bu
+değişiklik turu kısaltıyorsa kabul ediliyor ve kısaltan bir hamle kalmayana
+kadar sürüyor.
+
+Önce daha basit bir yol denendi: her tur depodan başlasın, kalan noktalar
+arasından kapasiteye sığan en yakını seçilsin, sığan nokta kalmayınca depoya
+dönülsün. Bu yöntem turlarda küçük kapasite boşlukları bırakıyor, dolayısıyla
+gereğinden fazla tur açılıyor ve her fazladan tur iki depo bacağı ekliyor. Dar
+kapasitelerde sonuç sıralı gidişten bile kötü çıkabiliyordu, o yüzden bırakıldı.
 
 ![Küme 0 drone rotaları](cikti/kume_0_rota.png)
 
-Son çalıştırmada 45 nokta 21 drone turuna bölündü, toplam mesafe 3801,3 çıktı.
-Aynı noktalar tablodaki sırayla kapasiteye bölünüp o sırayla gezilseydi toplam
-mesafe 4242,5 olacaktı; yani sıralama yüzde 10,4 kazandırıyor. Betik bu iki
-sayıyı her çalıştırmada birlikte yazdırıyor.
+Varsayılan ayarlarla (5 küme, 30 birim kapasite) 45 nokta 22 drone turuna
+bölündü, toplam mesafe 3477,0 çıktı. Aynı noktalar tablodaki sırayla kapasiteye
+bölünüp o sırayla gezilseydi toplam mesafe 4242,5 olacaktı; yani yüzde 18,0
+kazanç var. Betik bu iki sayıyı her çalıştırmada birlikte yazdırıyor.
 
 Sonuç `cikti/drone_rotalari.csv` dosyasına yazılıyor. Sütunlar: küme numarası,
 drone numarası, çıkış deposu, taşınan yük, tur mesafesi ve durak sırası.
 
 ```
 Kume,Drone,Depo,Yuk,Mesafe,Rota
-0,1,Kuzey Depo,28,131.31,Kuzey Depo -> Nokta 1 (12 birim) -> Nokta 11 (8 birim) -> Nokta 17 (8 birim) -> Kuzey Depo
+0,3,Kuzey Depo,29,127.58,Kuzey Depo -> Nokta 8 (11 birim) -> Nokta 25 (18 birim) -> Kuzey Depo
 ```
 
 ## Neden A* yok
@@ -118,8 +140,8 @@ kondu.
 
 - Kümeleme mesafe matrisi satırları üzerinde yapılıyor. Bu, coğrafi yakınlığın
   makul bir karşılığı ama tam olarak aynı şey değil.
-- Turlar önce en yakın komşu ile kuruluyor, sonra 2-opt uygulanıyor. İkisi de
-  sezgisel; sonuç en iyi çözüm olmak zorunda değil, sadece iyi bir çözüm.
+- Turlar Clarke-Wright ile kuruluyor, sonra 2-opt uygulanıyor. İkisi de sezgisel;
+  sonuç en iyi çözüm olmak zorunda değil, sadece iyi bir çözüm.
 - Turlar küme küme kuruluyor. Farklı kümelerdeki iki komşu nokta aynı drona
   verilemiyor, bu da bazı turları gereksiz uzatıyor.
 - Drone menzili, uçuş süresi ve şarj kısıtı hesaba katılmadı; tek kısıt kapasite.
@@ -139,6 +161,7 @@ requirements.txt  matplotlib, openpyxl, pandas, scikit-learn
 
 - [Makine Öğrenmesi - Clustering Kümeleme Teknikleri](https://samed-harman.medium.com/makine-%C3%B6%C4%9Frenmesi-clustering-k%C3%BCmeleme-teknikleri-bd1b59a0a177)
 - [Elbow Method for Optimal Value of K in KMeans](https://www.geeksforgeeks.org/elbow-method-for-optimal-value-of-k-in-kmeans/)
+- [Clarke-Wright savings algorithm](https://en.wikipedia.org/wiki/Vehicle_routing_problem#Savings_algorithm)
 - [2-opt](https://en.wikipedia.org/wiki/2-opt)
 - [Multidimensional scaling](https://scikit-learn.org/stable/modules/manifold.html#multidimensional-scaling)
 

@@ -10,8 +10,8 @@ Adımlar:
 1. İhtiyaç noktaları arası mesafe matrisi ve talep tablosu okunuyor.
 2. Elbow yöntemiyle küme sayısına bakılıp K-Means ile noktalar kümeleniyor.
 3. Her küme, kendisine ortalama olarak daha yakın olan depoya bağlanıyor.
-4. Küme içindeki noktalar drone kapasitesine sığacak turlara bölünüyor;
-   turların ziyaret sırası en yakın komşu ile kurulup 2-opt ile iyileştiriliyor.
+4. Küme içindeki noktalar Clarke-Wright tasarruf yöntemiyle drone kapasitesine
+   sığacak turlara bölünüyor; her turun ziyaret sırası 2-opt ile iyileştiriliyor.
 5. Grafikler ve rota listesi cikti/ klasörüne yazılıyor.
 
     python drone_rota.py
@@ -150,35 +150,68 @@ def iki_opt(tur, depo, mesafe):
 def turlari_kur(noktalar, talep, depo, mesafe, kapasite):
     """Küme noktalarını drone kapasitesine sığan turlara böler.
 
-    Her tur depodan başlıyor; kapasiteye sığan noktalar arasından en yakını
-    seçiliyor, sığan nokta kalmayınca tur depoya dönüyor. Sonrasında tur
-    2-opt ile iyileştiriliyor.
+    Clarke-Wright tasarruf yöntemi kullanılıyor. Başlangıçta her nokta kendi
+    başına bir tur; iki turu birleştirmenin kazandırdığı yol
+
+        tasarruf(i, j) = d(depo, i) + d(depo, j) - d(i, j)
+
+    ile hesaplanıp en çok kazandıran birleştirmeden başlanıyor. Kapasiteyi
+    aşmayan ve iki turun uçlarını birbirine bağlayan birleştirmeler kabul
+    ediliyor. Sonunda her tur ayrıca 2-opt ile iyileştiriliyor.
+
+    Sadece "en yakın noktayı al" demek yetmiyordu: kapasiteye sığan en yakın
+    nokta seçilince turlarda küçük boşluklar kalıyor ve gereksiz yere fazladan
+    tur açılıyordu. Tasarruf yöntemi hem daha az tur hem daha kısa yol çıkarıyor.
     """
-    kalan = list(noktalar)
-    turlar = []
+    buyuk = [n for n in noktalar if talep[n] > kapasite]
+    if buyuk:
+        raise SystemExit(
+            f"Tek basina kapasiteyi asan nokta var (kapasite {kapasite}): {buyuk}"
+        )
 
-    while kalan:
-        tur = []
-        yuk = 0
-        simdiki = depo
+    turlar = {no: [nokta] for no, nokta in enumerate(noktalar)}
+    yukler = {no: talep[nokta] for no, nokta in enumerate(noktalar)}
+    tur_no = {nokta: no for no, nokta in enumerate(noktalar)}
 
-        while True:
-            adaylar = [n for n in kalan if yuk + talep[n] <= kapasite]
-            if not adaylar:
-                break
-            sonraki = min(adaylar, key=lambda n: mesafe.at[simdiki, n])
-            tur.append(sonraki)
-            yuk += talep[sonraki]
-            kalan.remove(sonraki)
-            simdiki = sonraki
-
-        if not tur:
-            raise SystemExit(
-                f"Tek basina kapasiteyi asan nokta var, kapasite: {kapasite}"
+    tasarruflar = []
+    for a in range(len(noktalar)):
+        for b in range(a + 1, len(noktalar)):
+            i, j = noktalar[a], noktalar[b]
+            tasarruflar.append(
+                (mesafe.at[depo, i] + mesafe.at[depo, j] - mesafe.at[i, j], i, j)
             )
-        turlar.append(iki_opt(tur, depo, mesafe))
+    tasarruflar.sort(key=lambda satir: -satir[0])
 
-    return turlar
+    for tasarruf, i, j in tasarruflar:
+        if tasarruf <= 0:
+            break  # birlestirmek yolu uzatiyorsa gerisine bakmaya gerek yok
+
+        ilk_no, ikinci_no = tur_no[i], tur_no[j]
+        if ilk_no == ikinci_no:
+            continue
+        if yukler[ilk_no] + yukler[ikinci_no] > kapasite:
+            continue
+
+        ilk, ikinci = turlar[ilk_no], turlar[ikinci_no]
+
+        # i birinci turun sonunda, j ikinci turun basinda olmali; mesafeler
+        # simetrik oldugu icin gerekirse turlari ters cevirebiliyoruz.
+        if ilk[0] == i:
+            ilk = ilk[::-1]
+        elif ilk[-1] != i:
+            continue
+        if ikinci[-1] == j:
+            ikinci = ikinci[::-1]
+        elif ikinci[0] != j:
+            continue
+
+        turlar[ilk_no] = ilk + ikinci
+        yukler[ilk_no] += yukler[ikinci_no]
+        for nokta in ikinci:
+            tur_no[nokta] = ilk_no
+        del turlar[ikinci_no], yukler[ikinci_no]
+
+    return [iki_opt(tur, depo, mesafe) for tur in turlar.values()]
 
 
 def sirali_turlar(noktalar, talep, kapasite):
